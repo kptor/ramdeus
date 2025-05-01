@@ -6,6 +6,7 @@ import {
   verifyKeyMiddleware,
 } from "discord-interactions";
 import { getRandomQuote } from "./quote.js";
+import { answerQuery } from "./advice.js";
 
 // Create an express app
 const app = express();
@@ -47,6 +48,30 @@ app.post(
             content: quote.content + " - " + quote.author,
           },
         });
+      }
+
+      if (name === "advice") {
+        // Acknowledge the interaction immediately
+        res.send({
+          type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
+        });
+
+        // Do the slow AI call after response is sent
+        const userQuery = data.options.find((o) => o.name === "question").value;
+        const advice = await answerQuery(userQuery);
+
+        // Use Discord's REST API to send followup message
+        // (You'll need your app's token and 'interaction token' from the payload)
+        fetch(
+          `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${req.body.token}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content: advice }),
+          },
+        );
+
+        return; // already sent initial response
       }
 
       console.error(`unknown command: ${name}`);
