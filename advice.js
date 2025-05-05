@@ -1,5 +1,8 @@
 import { generateText } from "ai";
 import { createAzure } from "@ai-sdk/azure";
+import { loadConfig } from "./utils.js";
+
+loadConfig();
 
 const azure = createAzure({
   resourceName: process.env.AZURE_AI_RESOURCE,

@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 const QUOTE_COMMAND = {
   name: "quote",
   description:

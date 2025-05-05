@@ -1,4 +1,3 @@
-import "dotenv/config";
 import express from "express";
 import {
   InteractionResponseType,
@@ -7,6 +6,9 @@ import {
 } from "discord-interactions";
 import { getRandomQuote } from "./quote.js";
 import { answerQuery } from "./advice.js";
+import { loadConfig } from "./utils.js";
+
+loadConfig();
 
 // Create an express app
 const app = express();
@@ -85,4 +87,6 @@ app.post(
 
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
+  console.log("Bot public key:", process.env.PUBLIC_KEY);
+  console.log("Azure AI resource:", process.env.AZURE_AI_RESOURCE);
 });

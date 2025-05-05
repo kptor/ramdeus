@@ -10,6 +10,8 @@
   },
   "scripts": {
     "start": "node app.js",
+    "start:dev": "NODE_ENV=development node app.js",
+    "start:prod": "NODE_ENV=production node app.js",
     "register:global": "node commandsGlobal.js",
     "register:dev": "node commandsDevGuild.js",
     "register:yam": "node commandsYamGuild.js",

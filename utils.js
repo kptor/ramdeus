@@ -1,4 +1,4 @@
-import "dotenv/config";
+import * as dotenv from "dotenv";
 
 export async function DiscordRequest(endpoint, options) {
   // append endpoint to root API URL
@@ -53,4 +53,11 @@ export async function InstallGuildCommands(appId, guildId, commands) {
   } catch (err) {
     console.error("Error registering guild commands:", err);
   }
+}
+
+export function loadConfig() {
+  // Set the NODE_ENV environment variable if it's not already set.
+  process.env.NODE_ENV = process.env.NODE_ENV || "development";
+  const envFile = `.env.${process.env.NODE_ENV}`;
+  dotenv.config({ path: envFile });
 }
