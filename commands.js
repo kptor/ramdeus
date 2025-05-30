@@ -29,11 +29,24 @@ const ATTACK_COMMAND = {
 };
 
 const BATTLE_STATUS_COMMAND = {
-  name: "battle",
-  description: "Check the current battle status against the possessed Ram Deus 👹⚔️",
+  name: "battle-status",
+  description: "Check the current battle status and health of the possessed Ram Deus 👹⚔️",
   type: 1,
   integration_types: [0, 1],
   contexts: [0, 1, 2],
 };
 
-export const ALL_COMMANDS = [QUOTE_COMMAND, ADVICE_COMMAND, ATTACK_COMMAND, BATTLE_STATUS_COMMAND];
+const SPEAK_COMMAND = {
+  name: "speak",
+  description: "Speak directly to Ram Deus (possessed or freed) 🗣️",
+  options: [
+    {
+      type: 3, // STRING
+      name: "message",
+      description: "What do you want to say to Ram Deus?",
+      required: true,
+    },
+  ],
+};
+
+export const ALL_COMMANDS = [QUOTE_COMMAND, ADVICE_COMMAND, ATTACK_COMMAND, BATTLE_STATUS_COMMAND, SPEAK_COMMAND];

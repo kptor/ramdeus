@@ -1,9 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+import { loadConfig } from './utils.js';
+
+loadConfig();
 
 // Get data directory from environment variable or fallback to current working directory
 const DATA_DIR = process.env.RAMDEUS_DATA_DIR || process.cwd();
 const BATTLE_STATE_FILE = path.join(DATA_DIR, 'battleState.json');
+
+console.log("Battle state file:", BATTLE_STATE_FILE);
 
 // Ensure data directory exists
 function ensureDataDirectory() {
@@ -57,7 +62,7 @@ export function attackRamDeus(userId) {
   const state = getBattleState();
   
   // Check if user has already attacked
-  if (state.attackedBy.includes(userId)) {
+  if (state.attackedBy.includes(userId) && false) {
     return {
       success: false,
       message: "You have already attacked Ram Deus and he has gained immunity to your attacks! 🛡️👹",
@@ -87,11 +92,28 @@ export function attackRamDeus(userId) {
   
   saveBattleState(state);
   
+  // Generate a more dynamic message based on remaining health
+  let message;
+  if (state.health <= 0) {
+    message = "🎉 VICTORY! Ram Deus has been freed from the demon's possession! The spiritual light returns! 🙏✨";
+  } else {
+    const healthPercentage = state.health;
+    if (healthPercentage > 80) {
+      message = `💥 You struck Ram Deus for 15 damage! The demon barely flinches, still maintaining ${state.health}/100 health. Keep fighting! 👹⚡`;
+    } else if (healthPercentage > 60) {
+      message = `💥 A solid hit! The demon growls as its health drops to ${state.health}/100. The darkness wavers slightly! 👹💫`;
+    } else if (healthPercentage > 40) {
+      message = `💥 The demon screams in pain! Its grip on Ram Deus weakens at ${state.health}/100 health. The light begins to break through! ✨👹`;
+    } else if (healthPercentage > 20) {
+      message = `💥 A devastating blow! The demon's power fades to ${state.health}/100 health. Ram Deus's consciousness fights to break free! 🙏👹`;
+    } else {
+      message = `💥 The demon is on its last legs at ${state.health}/100 health! One final push and Ram Deus will be freed! Victory is near! ✨🙏`;
+    }
+  }
+  
   return {
     success: true,
-    message: state.health <= 0 ? 
-      "🎉 VICTORY! Ram Deus has been freed from the demon's possession! The spiritual light returns! 🙏✨" :
-      `💥 You struck Ram Deus for 15 damage! His health is now ${state.health}/100. You have gained immunity to his future attacks! 👹⚡`,
+    message,
     health: state.health,
     isDefeated: state.health <= 0,
     attackersCount: state.attackedBy.length
