@@ -1,7 +1,21 @@
 import fs from 'fs';
 import path from 'path';
 
-const BATTLE_STATE_FILE = path.join(process.cwd(), 'battleState.json');
+// Get data directory from environment variable or fallback to current working directory
+const DATA_DIR = process.env.RAMDEUS_DATA_DIR || process.cwd();
+const BATTLE_STATE_FILE = path.join(DATA_DIR, 'battleState.json');
+
+// Ensure data directory exists
+function ensureDataDirectory() {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+      console.log(`Created data directory: ${DATA_DIR}`);
+    }
+  } catch (error) {
+    console.error('Error creating data directory:', error);
+  }
+}
 
 // Default battle state
 const DEFAULT_BATTLE_STATE = {
@@ -14,6 +28,7 @@ const DEFAULT_BATTLE_STATE = {
 // Load battle state from file or create default
 export function getBattleState() {
   try {
+    ensureDataDirectory();
     if (fs.existsSync(BATTLE_STATE_FILE)) {
       const data = fs.readFileSync(BATTLE_STATE_FILE, 'utf8');
       return JSON.parse(data);
@@ -29,7 +44,9 @@ export function getBattleState() {
 // Save battle state to file
 export function saveBattleState(state) {
   try {
+    ensureDataDirectory();
     fs.writeFileSync(BATTLE_STATE_FILE, JSON.stringify(state, null, 2));
+    console.log(`Battle state saved to: ${BATTLE_STATE_FILE}`);
   } catch (error) {
     console.error('Error saving battle state:', error);
   }

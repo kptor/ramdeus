@@ -185,6 +185,7 @@ app.listen(PORT, () => {
   console.log("Listening on port", PORT);
   console.log("Bot public key:", process.env.PUBLIC_KEY);
   console.log("Azure AI resource:", process.env.AZURE_AI_RESOURCE);
+  console.log("Data directory:", process.env.RAMDEUS_DATA_DIR || process.cwd());
   
   // Log initial battle state
   const battleState = getBattleState();
