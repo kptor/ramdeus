@@ -20,4 +20,20 @@ const ADVICE_COMMAND = {
   ],
 };
 
-export const ALL_COMMANDS = [QUOTE_COMMAND, ADVICE_COMMAND];
+const ATTACK_COMMAND = {
+  name: "attack",
+  description: "Attack the possessed Ram Deus! Join the battle to free him from the demon! ⚔️👹",
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+};
+
+const BATTLE_STATUS_COMMAND = {
+  name: "battle",
+  description: "Check the current battle status against the possessed Ram Deus 👹⚔️",
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+};
+
+export const ALL_COMMANDS = [QUOTE_COMMAND, ADVICE_COMMAND, ATTACK_COMMAND, BATTLE_STATUS_COMMAND];
