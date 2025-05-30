@@ -62,7 +62,7 @@ export function attackRamDeus(userId) {
   const state = getBattleState();
   
   // Check if user has already attacked
-  if (state.attackedBy.includes(userId) && false) {
+  if (state.attackedBy.includes(userId)) {
     return {
       success: false,
       message: "You have already attacked Ram Deus and he has gained immunity to your attacks! 🛡️👹",
